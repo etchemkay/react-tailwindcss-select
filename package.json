@@ -1,5 +1,5 @@
 {
-    "name": "react-tailwindcss-select",
+    "name": "@etchemkay/react-tailwindcss-select",
     "version": "1.8.5",
     "description": "A select input made with React js and Tailwind CSS",
     "main": "dist/index.cjs.js",

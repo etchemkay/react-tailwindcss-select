@@ -15,6 +15,7 @@ interface OptionsProps {
     isMultiple: boolean;
     value: Option | Option[] | null;
     primaryColor: string;
+    filterFn?: (item: Option) => boolean;
 }
 
 const Options: React.FC<OptionsProps> = ({
@@ -23,11 +24,12 @@ const Options: React.FC<OptionsProps> = ({
     text,
     isMultiple,
     value,
-    primaryColor = DEFAULT_THEME
+    primaryColor = DEFAULT_THEME,
+    filterFn,
 }) => {
     const { classNames } = useContext(SelectContext);
     const filterByText = useCallback(() => {
-        const filterItem = (item: Option) => {
+        const filterItem = typeof(filterFn) === 'function' ? filterFn : (item: Option) => {
             return item.label.toLowerCase().indexOf(text.toLowerCase()) > -1;
         };
 

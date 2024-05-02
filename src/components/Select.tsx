@@ -27,7 +27,8 @@ const Select: React.FC<SelectProps> = ({
     primaryColor = DEFAULT_THEME,
     formatGroupLabel = null,
     formatOptionLabel = null,
-    classNames
+    classNames,
+    filterFn,
 }) => {
     const [open, setOpen] = useState<boolean>(menuIsOpen);
     const [list, setList] = useState<ListOption>(options);
@@ -294,6 +295,7 @@ const Select: React.FC<SelectProps> = ({
                             isMultiple={isMultiple}
                             value={value}
                             primaryColor={primaryColor || DEFAULT_THEME}
+                            filterFn={filterFn}
                         />
                     </div>
                 )}
