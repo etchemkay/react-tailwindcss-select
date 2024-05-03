@@ -65,8 +65,8 @@ const Item: React.FC<ItemProps> = ({ item, primaryColor }) => {
                         <li
                             tabIndex={0}
                             onKeyDown={(e: React.KeyboardEvent<HTMLLIElement>) => {
-                                if (e.key === ' ' || e.key === 'Enter') {
-                                    handleValueChange(item)
+                                if (e.key === " " || e.key === "Enter") {
+                                    handleValueChange(item);
                                 }
                             }}
                             aria-selected={isSelected}

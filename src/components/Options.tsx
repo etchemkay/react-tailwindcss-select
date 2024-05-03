@@ -6,7 +6,7 @@ import DisabledItem from "./DisabledItem";
 import GroupItem from "./GroupItem";
 import Item from "./Item";
 import { SelectContext } from "./SelectProvider";
-import { Option, Options as ListOption } from "./type";
+import { Option, Options as ListOption, GroupOption } from "./type";
 
 interface OptionsProps {
     list: ListOption;
@@ -15,7 +15,8 @@ interface OptionsProps {
     isMultiple: boolean;
     value: Option | Option[] | null;
     primaryColor: string;
-    filterFn?: (item: Option) => boolean;
+    filterFn?: (item: Option, searchTerm: string) => boolean;
+    sortResults?: (results: ListOption, searchTerm: string) => ListOption;
 }
 
 const Options: React.FC<OptionsProps> = ({
@@ -26,12 +27,16 @@ const Options: React.FC<OptionsProps> = ({
     value,
     primaryColor = DEFAULT_THEME,
     filterFn,
+    sortResults = (results, searchTerm) => results
 }) => {
     const { classNames } = useContext(SelectContext);
     const filterByText = useCallback(() => {
-        const filterItem = typeof(filterFn) === 'function' ? filterFn : (item: Option) => {
-            return item.label.toLowerCase().indexOf(text.toLowerCase()) > -1;
-        };
+        const filterItem =
+            typeof filterFn === "function"
+                ? (item: Option) => filterFn(item, text)
+                : (item: Option) => {
+                      return item.label.toLowerCase().indexOf(text.toLowerCase()) > -1;
+                  };
 
         let result = list.map(item => {
             if ("options" in item) {
@@ -90,7 +95,8 @@ const Options: React.FC<OptionsProps> = ({
     );
 
     const filterResult = useMemo(() => {
-        return removeValues(filterByText());
+        const results = removeValues(filterByText());
+        return sortResults(results, text);
     }, [filterByText, removeValues]);
 
     return (

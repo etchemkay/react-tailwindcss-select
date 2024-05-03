@@ -52,5 +52,6 @@ export interface SelectProps {
     formatGroupLabel?: ((data: GroupOption) => JSX.Element) | null;
     formatOptionLabel?: ((data: Option) => JSX.Element) | null;
     classNames?: ClassNames;
-    filterFn?: (item: Option) => boolean;
+    filterFn?: (item: Option, searchTerm: string) => boolean;
+    sortResults?: (results: Options, searchTerm: string) => Options;
 }

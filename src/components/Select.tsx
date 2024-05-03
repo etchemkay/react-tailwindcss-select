@@ -29,6 +29,7 @@ const Select: React.FC<SelectProps> = ({
     formatOptionLabel = null,
     classNames,
     filterFn,
+    sortResults
 }) => {
     const [open, setOpen] = useState<boolean>(menuIsOpen);
     const [list, setList] = useState<ListOption>(options);
@@ -296,6 +297,7 @@ const Select: React.FC<SelectProps> = ({
                             value={value}
                             primaryColor={primaryColor || DEFAULT_THEME}
                             filterFn={filterFn}
+                            sortResults={sortResults}
                         />
                     </div>
                 )}
