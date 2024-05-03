@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo } from "react";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 
 import { DEFAULT_THEME } from "../constants";
 
@@ -17,6 +17,7 @@ interface OptionsProps {
     primaryColor: string;
     filterFn?: (item: Option, searchTerm: string) => boolean;
     sortResults?: (results: ListOption, searchTerm: string) => ListOption;
+    activeIndex?: number;
 }
 
 const Options: React.FC<OptionsProps> = ({
@@ -27,9 +28,11 @@ const Options: React.FC<OptionsProps> = ({
     value,
     primaryColor = DEFAULT_THEME,
     filterFn,
-    sortResults = (results, searchTerm) => results
+    sortResults = (results, searchTerm) => results,
+    activeIndex: parentActiveIndex
 }) => {
     const { classNames } = useContext(SelectContext);
+    const [activeIndex, setActiveIndex] = React.useState<number | undefined>(parentActiveIndex);
     const filterByText = useCallback(() => {
         const filterItem =
             typeof filterFn === "function"
@@ -99,6 +102,10 @@ const Options: React.FC<OptionsProps> = ({
         return sortResults(results, text);
     }, [filterByText, removeValues]);
 
+    useEffect(() => {
+        setActiveIndex(parentActiveIndex);
+    }, [parentActiveIndex]);
+
     return (
         <div
             role="options"
@@ -118,8 +125,12 @@ const Options: React.FC<OptionsProps> = ({
                             {index + 1 < filterResult.length && <hr className="my-1" />}
                         </>
                     ) : (
-                        <div className="px-2.5">
-                            <Item primaryColor={primaryColor || DEFAULT_THEME} item={item} />
+                        <div className="px-2.5" onMouseMove={() => setActiveIndex(index)}>
+                            <Item
+                                isActive={index === activeIndex}
+                                primaryColor={primaryColor || DEFAULT_THEME}
+                                item={item}
+                            />
                         </div>
                     )}
                 </React.Fragment>

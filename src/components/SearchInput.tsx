@@ -7,11 +7,12 @@ interface SearchInputProps {
     placeholder?: string;
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     name?: string;
 }
 
 const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function SearchInput(
-    { placeholder = "", value = "", onChange, name = "" },
+    { placeholder = "", value = "", onChange, onKeyDown, name = "" },
     ref
 ) {
     const { classNames } = useContext(SelectContext);
@@ -41,6 +42,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function Sear
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
+                onKeyDown={onKeyDown}
                 name={name}
             />
         </div>

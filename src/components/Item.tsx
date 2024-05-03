@@ -9,9 +9,10 @@ import { Option } from "./type";
 interface ItemProps {
     item: Option;
     primaryColor: string;
+    isActive?: boolean;
 }
 
-const Item: React.FC<ItemProps> = ({ item, primaryColor }) => {
+const Item: React.FC<ItemProps> = ({ item, primaryColor, isActive }) => {
     const { classNames, value, handleValueChange, formatOptionLabel } = useSelectContext();
 
     const isSelected = useMemo(() => {
@@ -42,14 +43,15 @@ const Item: React.FC<ItemProps> = ({ item, primaryColor }) => {
     const getItemClass = useCallback(() => {
         const baseClass =
             "block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded";
-        const selectedClass = isSelected
-            ? `text-white ${bgColor}`
-            : `text-gray-500 ${bgHoverColor} ${textHoverColor}`;
+        const selectedClass =
+            isSelected || isActive
+                ? `text-white ${bgColor}`
+                : `text-gray-500 ${bgHoverColor} ${textHoverColor}`;
 
         return classNames && classNames.listItem
-            ? classNames.listItem({ isSelected })
+            ? classNames.listItem({ isSelected, isActive })
             : `${baseClass} ${selectedClass}`;
-    }, [bgColor, bgHoverColor, classNames, isSelected, textHoverColor]);
+    }, [bgColor, bgHoverColor, classNames, isSelected, textHoverColor, isActive]);
 
     return (
         <>

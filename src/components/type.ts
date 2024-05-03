@@ -23,7 +23,7 @@ export interface ClassNames {
     tagItemIcon?: string;
     list?: string;
     listGroupLabel?: string;
-    listItem?: (value?: { isSelected?: boolean }) => string;
+    listItem?: (value?: { isSelected?: boolean; isActive?: boolean }) => string;
     listDisabledItem?: string;
     ChevronIcon?: (value?: { open?: boolean }) => string;
     searchContainer?: string;

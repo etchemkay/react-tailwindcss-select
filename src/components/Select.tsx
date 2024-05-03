@@ -34,6 +34,7 @@ const Select: React.FC<SelectProps> = ({
     const [open, setOpen] = useState<boolean>(menuIsOpen);
     const [list, setList] = useState<ListOption>(options);
     const [inputValue, setInputValue] = useState<string>("");
+    const [activeOptionIndex, setActiveOptionIndex] = useState<number>(-1);
     const ref = useRef<HTMLDivElement>(null);
     const searchBoxRef = useRef<HTMLInputElement>(null);
 
@@ -286,6 +287,38 @@ const Select: React.FC<SelectProps> = ({
                                         onSearchInputChange(e);
                                     setInputValue(e.target.value);
                                 }}
+                                onKeyDown={e => {
+                                    const { code } = e;
+                                    if (list.length === 0) {
+                                        return;
+                                    }
+                                    if (
+                                        code !== "ArrowUp" &&
+                                        code !== "ArrowDown" &&
+                                        code !== "Enter"
+                                    ) {
+                                        return;
+                                    }
+                                    if (code === "ArrowDown") {
+                                        setActiveOptionIndex(
+                                            activeOptionIndex === list.length - 1 ||
+                                                activeOptionIndex === -1
+                                                ? 0
+                                                : activeOptionIndex + 1
+                                        );
+                                    }
+                                    if (code === "ArrowUp") {
+                                        setActiveOptionIndex(
+                                            activeOptionIndex === 0 || activeOptionIndex === -1
+                                                ? list.length - 1
+                                                : activeOptionIndex - 1
+                                        );
+                                    }
+                                    if (code === "Enter" && activeOptionIndex !== -1) {
+                                        handleValueChange(list[activeOptionIndex] as Option);
+                                        setActiveOptionIndex(-1);
+                                    }
+                                }}
                             />
                         )}
 
@@ -298,6 +331,7 @@ const Select: React.FC<SelectProps> = ({
                             primaryColor={primaryColor || DEFAULT_THEME}
                             filterFn={filterFn}
                             sortResults={sortResults}
+                            activeIndex={activeOptionIndex}
                         />
                     </div>
                 )}
